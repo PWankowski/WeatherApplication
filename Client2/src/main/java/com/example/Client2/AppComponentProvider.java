@@ -8,11 +8,14 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class AppComponentProvider {
 
-    @Bean
+    @Bean(name = "microservice")
     @LoadBalanced
     public RestTemplate microserviceClient(){
         return new RestTemplate();
     }
+
+    @Bean(name = "http")
+    public RestTemplate httpClient(){return  new RestTemplate();}
 
 
 }

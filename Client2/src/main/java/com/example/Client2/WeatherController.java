@@ -1,25 +1,21 @@
 package com.example.Client2;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/weather")
 public class WeatherController {
 
-    private final RestTemplate restTemplate;
+    private final WeatherService weatherService;
 
-    public WeatherController(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public WeatherController(WeatherService weatherService) {
+        this.weatherService = weatherService;
     }
 
-    @GetMapping
-    public Weather getWeather(){
-        Config config = restTemplate.getForObject("http://config-service/config", Config.class);
-        Weather weather = new Weather(10,config.getApiKey());
-        return weather;
+    @GetMapping("/{name}")
+    public WeatherEntity getWeather(@PathVariable String name){
+      return weatherService.getWeather(name);
     }
 
 
@@ -27,44 +23,33 @@ public class WeatherController {
 }
 
 class Config{
-    private String apiKey;
 
-    public String getApiKey() {
-        return apiKey;
+    private String url;
+    private String serviceName;
+
+    public Config(String url, String serviceName) {
+        this.url = url;
+        this.serviceName = serviceName;
     }
 
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-}
-
-
-class Weather {
-
-    public int temp;
-    public String apiKey;
-
-    public Weather(int temp, String apiKey) {
-        this.temp = temp;
-        this.apiKey = apiKey;
+    public Config() {
     }
 
-    public Weather() {
+    public String getUrl() {
+        return url;
     }
 
-    public int getTemp() {
-        return temp;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public void setTemp(int temp) {
-        this.temp = temp;
+    public String getServiceName() {
+        return serviceName;
     }
 
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 }
+
+
