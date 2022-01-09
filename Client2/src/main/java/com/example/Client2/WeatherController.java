@@ -3,6 +3,8 @@ package com.example.Client2;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/weather")
 public class WeatherController {
@@ -14,7 +16,7 @@ public class WeatherController {
     }
 
     @GetMapping("/{name}")
-    public WeatherEntity getWeather(@PathVariable String name){
+    public List<WeatherEntity> getWeather(@PathVariable String name){
       return weatherService.getWeather(name);
     }
 
